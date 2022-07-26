@@ -1,0 +1,26 @@
+{
+  "price": null,
+  "number": null,
+  "gatekeeper": null,
+  "creators": [],
+  "solTreasuryAccount": "",
+  "splTokenAccount": null,
+  "splToken": null,
+  "goLiveDate": null,
+  "endSettings": null,
+  "whitelistMintSettings": {
+    "mode": "burnEveryTime",
+    "mint": "",
+    "presale": false,
+    "discountPrice": null
+  },
+  "hiddenSettings": null,
+  "uploadMethod": "bundlr",
+  "retainAuthority": true,
+  "isMutable": true,
+  "symbol": "",
+  "sellerFeeBasisPoints": null,
+  "awsS3Bucket": null,
+  "nftStorageAuthToken": null,
+  "shdwStorageAccount": null
+}
