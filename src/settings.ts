@@ -1,11 +1,13 @@
+import { Creator, CandyMachineSettings } from './types';
+
 const {getPubkey, getNumber, getBool} = require('./utils');
-const config = require("./config_default.json");
-const collection = require("./assets/collection.json")
+const collection = require("../assets/collection.json")
 const glob = require('glob');
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
 const datePrompt = require('date-prompt');
 
-const getCreators = (creators = [], royalties = 0, activeCreator = 1) => {
+
+const getCreators = (creators: Array<Creator> = [], royalties: number = 0, activeCreator: number = 1): Array<Creator> => {
 
     let breakTotal = 100
 
@@ -42,11 +44,14 @@ const getCreators = (creators = [], royalties = 0, activeCreator = 1) => {
         return creators
     } else if (totalRoyalties < 100) {
         return getCreators(creators, totalRoyalties, totalCreators)
+    } else {
+        throw('Royalties cannot exceed 100.')
     }
 
 }
 
-const getSupplyLength = () => { }
+const getSupplyLength = () => {
+}
 
 const getSupply = () => {
     const files = glob.sync('./assets/*.json')
@@ -63,7 +68,7 @@ const getSupply = () => {
 }
 
 const getMintDate = async () => {
-    return await datePrompt(`When should the mint go public? (${timeZone} | Military Time)`).then(isoStr => {
+    return await datePrompt(`When should the mint go public? (${timeZone} | Military Time)`).then((isoStr: string) => {
         let dateObj = new Date(isoStr)
         dateObj.setSeconds(0, 0);
         let dateValidStr = `${dateObj.toDateString()} - ${dateObj.toLocaleTimeString('en-US', {timeZone: 'America/New_York'})} EST`
@@ -73,11 +78,11 @@ const getMintDate = async () => {
             throw (`Mint Date ${dateValidStr} invalid. Halting.`)
         }
 
-        dateObj = dateObj.toISOString().replace('.000', '')
+        let dateStr = dateObj.toISOString().replace('.000', '')
 
-        return dateObj
+        return dateStr
     })
-        .catch(isoStr => console.log('Aborted with', isoStr))
+        .catch((isoStr: string) => console.log('Aborted with', isoStr))
 }
 
 const getRoyaltyPercentage = () => {
@@ -95,7 +100,7 @@ const getRoyaltyPercentage = () => {
     return sellerFee
 }
 
-const getSettings = async () => {
+export const getSettings = async () => {
 
     const mintPrice = getNumber('Mint Price', 'What is your desired mint price? ');
     const supply = getSupply();
@@ -105,8 +110,8 @@ const getSettings = async () => {
     const whiteListToken = getPubkey('What is the token address of the whitelist token? Make sure the SPL token has 0 decimals. ')
     const sellerBasis = getRoyaltyPercentage();
 
-    const confirmSettings = () => {
-        let sets = {
+    const confirmSettings = (): CandyMachineSettings => {
+        let sets: CandyMachineSettings = {
             mintPrice: mintPrice,
             supply: supply,
             mintDate: mintDate,
@@ -138,4 +143,3 @@ const getSymbol = () => {
 }
 
 
-module.exports = {getSettings}

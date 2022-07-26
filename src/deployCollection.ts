@@ -1,11 +1,11 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const exec_sync = require('child_process').exec;
-const config = require("./config-pre.json");
+const config = require("../config-pre.json");
 const fs = require('fs');
 const {getNumberedOption, getBool} = require('./utils');
 
-const getStringBetween = (str, startSub, endSub) => {
+const getStringBetween = (str: string, startSub: string, endSub: string) => {
     let strIndex = str.indexOf(startSub) + startSub.length;
     let cmStr = str.substring(strIndex, str.length)
     let result = cmStr.substring(0, cmStr.indexOf(endSub))
@@ -68,10 +68,10 @@ const deploy = async () => {
 
 }
 
-const handleUpdate = async (option) => {
+const handleUpdate = async (option: number) => {
 
-    let updateDefault = "sugar update -c ./config-pre.json"
-    let updateLive = "sugar update -c ./config-post.json"
+    let updateDefault = "sugar update -c ../config-pre.json"
+    let updateLive = "sugar update -c ../config-post.json"
 
     // Cancel
     if (option === 1) {
@@ -81,7 +81,7 @@ const handleUpdate = async (option) => {
     // Update Default
     else if (option === 2) {
         console.log('Updating with `./config-pre.json`')
-        exec_sync(updateDefault, (err, stdout, stderr) => {
+        exec_sync(updateDefault, (err: string, stdout: string, stderr: string) => {
             if (err) {
                 //some err occurred
                 console.error(err)
@@ -95,7 +95,7 @@ const handleUpdate = async (option) => {
     // Go Live
     else if (option === 3) {
         console.log('Updating with `./config-post.json`')
-        exec_sync(updateLive, (err, stdout, stderr) => {
+        exec_sync(updateLive, (err: string, stdout: string, stderr: string) => {
             if (err) {
                 //some err occurred
                 console.error(err)
@@ -127,9 +127,11 @@ const deployCM = async () => {
         let option = getNumberedOption(promptText, 3)
         if (!getBool(`You chose: "${options[option - 1]}". Are you sure? (Y/N): `)) {
             console.log('Cancelling')
-            return deployCM()
+            await deployCM()
+            return
         } else {
-            return await handleUpdate(option)
+            await handleUpdate(option)
+            return
         }
 
     }
