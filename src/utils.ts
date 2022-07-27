@@ -35,15 +35,23 @@ export const getBool = (promptText: string, breakOnFalse: boolean = false): bool
     }
 }
 
-const getNumberedOption = (promptText: string, options_count: number): number => {
-    console.log(promptText)
+const getNumberedOption = (promptText: string, options: Array<any>): any => {
+
+    let optionStrings = options.map((i, idx) => {
+        return `    ${idx+1}): ${i}`
+    })
+
+    let optionString = optionStrings.join('\n')
+    console.log(`${promptText}\n--------------------------------\n${optionString}\n`)
+
     const val = Number(prompt('Enter Here: '));
-    if (val > options_count || val < 0 || isNaN(val)) {
-        console.log(`Option ${val} is invalid. Please choose [1-${options_count}]`)
-        return getNumberedOption(promptText, options_count)
+    if (val > options.length || val < 0 || isNaN(val)) {
+        console.log(`Option ${val} is invalid. Please choose [1-${options.length}]`)
+        return getNumberedOption(promptText, options)
     }
-    console.log(val)
-    return Number(val)
+    let res = options[val-1]
+    getBool(`You selected ${res}. Is this correct?`, true)
+    return res
 
 }
 

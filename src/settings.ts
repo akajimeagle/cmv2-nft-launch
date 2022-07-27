@@ -107,7 +107,6 @@ export const getSettings = async () => {
     let mintDate = await getMintDate()
     const treasuryWallet = getPubkey('What wallet should recieve mint funds? ')
     const creators = getCreators();
-    const whiteListToken = getPubkey('What is the token address of the whitelist token? Make sure the SPL token has 0 decimals. ')
     const sellerBasis = getRoyaltyPercentage();
 
     const confirmSettings = (): CandyMachineSettings => {
@@ -117,7 +116,6 @@ export const getSettings = async () => {
             mintDate: mintDate,
             treasuryWallet: treasuryWallet,
             creators: creators,
-            whiteListToken: whiteListToken,
             royalty: sellerBasis,
             symbol: getSymbol()
         }

@@ -8,12 +8,7 @@
   "splToken": null,
   "goLiveDate": null,
   "endSettings": null,
-  "whitelistMintSettings": {
-    "mode": "burnEveryTime",
-    "mint": "",
-    "presale": false,
-    "discountPrice": null
-  },
+  "whitelistMintSettings": null,
   "hiddenSettings": null,
   "uploadMethod": "bundlr",
   "retainAuthority": true,

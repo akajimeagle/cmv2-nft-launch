@@ -12,29 +12,17 @@ const fs = import('fs');
 const formatConfigs = (settings: CandyMachineSettings) => {
 
 
-    const formatPreLaunch = () => {
-        const preLaunch: CandyMachineConfig = {...config}
-        preLaunch.price = settings.mintPrice
-        preLaunch.number = settings.supply
-        preLaunch.creators = [...settings.creators]
-        preLaunch.solTreasuryAccount = settings.treasuryWallet
-        preLaunch.whitelistMintSettings.mint = settings.whiteListToken
-        preLaunch.sellerFeeBasisPoints = settings.royalty
-        preLaunch.symbol = settings.symbol
-        return preLaunch
-    }
+    const launch: CandyMachineConfig = {...config}
+    launch.price = settings.mintPrice
+    launch.number = settings.supply
+    launch.creators = [...settings.creators]
+    launch.solTreasuryAccount = settings.treasuryWallet
+    launch.whitelistMintSettings = null
+    launch.sellerFeeBasisPoints = settings.royalty
+    launch.symbol = settings.symbol
+    launch.goLiveDate = settings.mintDate
+    return launch
 
-    const formatLaunch = (preLaunchConf: CandyMachineConfig) => {
-        const launch = {...preLaunchConf}
-        launch.goLiveDate = settings.mintDate
-        return launch
-
-    }
-
-    const preLaunchConfig = formatPreLaunch();
-    const launchConfig = formatLaunch(preLaunchConfig);
-
-    return [preLaunchConfig, launchConfig]
 }
 
 const validateAssets = async () => {
@@ -64,31 +52,24 @@ Configured Settings
     return [rpc, balance, address]
 }
 
-
-
 const main = async () => {
 
-    let rpc, balance, address = await confirmSettings()
+    await confirmSettings()
 
-    const valid = await validateAssets();
+    await validateAssets();
 
     let settings = await getSettings();
-    console.log(settings)
 
-    let [preLaunch, launch] = formatConfigs(settings)
+    let launch = formatConfigs(settings)
 
-    let data = JSON.stringify(preLaunch);
-    (await fs).writeFileSync('./config-pre.json', data);
-
-    data = JSON.stringify(launch);
-    (await fs).writeFileSync('./config-post.json', data);
+    let data = JSON.stringify(launch);
+    (await fs).writeFileSync('./config.json', data);
 
     console.log('✅ Configuration Generation Complete!')
     console.log('--------------\n')
-    console.log('To Deploy Candy Machine : Run `$ node deployCollection.ts` to launch the disabled candy machine.')
-    console.log('When White List is Ready: Run `$ node deployCollection.ts` again & select option 3 to launch the live candy machine.\n')
+    console.log('To Deploy Candy Machine : Run `npm run deploy` to launch the candy machine.')
     console.log('--------------')
-//
+
 }
 
 main().then(null)

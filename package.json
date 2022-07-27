@@ -4,7 +4,8 @@
   "description": "Helper For Creating and Launching NFT Project",
   "main": "generateConfiguration.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "config": "ts-node src/generateConfiguration.ts",
+    "deploy": "ts-node src/deployCollection.ts"
   },
   "repository": {
     "type": "git",

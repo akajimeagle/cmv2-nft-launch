@@ -8,12 +8,7 @@ type CandyMachineConfig = {
   "splToken": null,
   "goLiveDate": string | null,
   "endSettings": null,
-  "whitelistMintSettings": {
-    "mode": string,
-    "mint": string,
-    "presale": boolean,
-    "discountPrice": number | null
-  },
+  "whitelistMintSettings": null,
   "hiddenSettings": null,
   "uploadMethod": string,
   "retainAuthority": boolean,
@@ -32,7 +27,6 @@ type CandyMachineSettings = {
     mintDate: string,
     treasuryWallet: string,
     creators: Array<Creator>,
-    whiteListToken: string,
     royalty: number,
     symbol: string
 }
